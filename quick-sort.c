@@ -1,12 +1,15 @@
+//クイックソートバブルソートを含む
 #include  <stdio.h>
+#include  <stdlib.h>
 
-void QSort(int x[10], int left, int right);
-void Swap(int x[10], int i, int j);
-void ShowData(int x[10]);
-int main(void);
+void QSort(int x[], int left, int right);
+void BubSort(int x[], int n);
+void Swap(int x[], int i, int j);
+void ShowData(int x[],int n);
+int main(int argc, char *argv[]);
 
   /* クイックソートを行う */
-void QSort(int x[10], int left, int right)
+void QSort(int x[], int left, int right)
 {
     int i, j;
     int pivot;
@@ -30,16 +33,33 @@ void QSort(int x[10], int left, int right)
         i++;                       /* 次のデータ */
         j--;
     }
-    ShowData(x);               /* 途中経過を表示 */
+    ShowData(x,right+1);               /* 途中経過を表示 */
 
     if (left < i - 1)              /* 基準値の左に 2 以上要素があれば */
         QSort(x, left, i - 1);     /* 左の配列を Q ソートする */
     if (j + 1 <  right)            /* 基準値の右に 2 以上要素があれば */
         QSort(x, j + 1, right);    /* 右の配列を Q ソートする */
 }
+  /* バブルソートを行う */
+void BubSort(int x[], int n)
+{
+    int i, j, temp;
+
+    for (i = 0; i < n - 1; i++) {
+        for (j = n - 1; j > i; j--) {
+            if (x[j - 1] > x[j]) {  /* 前の要素の方が大きかったら */
+                temp = x[j];        /* 交換する */
+                x[j] = x[j - 1];
+                x[j - 1]= temp;
+            }
+        }   
+        /* ソートの途中経過を表示 */
+        ShowData(x,n);
+    }
+}
 
   /* 配列の要素を交換する */
-void Swap(int x[10], int i, int j)
+void Swap(int x[], int i, int j)
 {
     int temp;
 
@@ -50,30 +70,39 @@ void Swap(int x[10], int i, int j)
 
 
   /* n 個のデータを表示する */
-void ShowData(int x[10])
+void ShowData(int x[],int n)
 {
     int i;
 
-    for (i = 0; i <10 ; i++)
+    for (i = 0; i < n ; i++)
         printf("%d  ", x[i]);
     printf("\n");
 }
 
-int main(void)
-{      /* ソートする配列 */
-	int x[10];
-	for(int i=0;i<10;i++)
-		scanf("%d",&x[i]);
+int main(int argc, char *argv[])
+{
+    int *x,*y;
 
+    for(int i=0;i<argc;i++){
+            x[i]=atoi(argv[i]);
+            y[i]=x[i];
+    }
+
+    //クイックソート部
     printf("ソート前:\n");
-    ShowData(x);
-
+    ShowData(x,argc);
     printf("ソート中:\n");
-    QSort(x, 0,10 - 1);
-
+    BubSort(x,argc);
     printf("ソート後:\n");
-    ShowData(x);
+    ShowData(x,argc);
 
-	return 0;
+    //バブルソート部
+    printf("ソート前:\n");
+    ShowData(y,argc);
+    printf("ソート中:\n");
+    QSort(y, 0,argc - 1);
+    printf("ソート後:\n");
+    ShowData(y,argc);
+
+        return 0;
 }
-
