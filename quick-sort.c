@@ -1,14 +1,15 @@
 //クイックソートバブルソートを含む
 #include  <stdio.h>
+#include  <stdlib.h>
 
-void QSort(int x[10], int left, int right);
-void BubSort(int x[10], int n);
-void Swap(int x[10], int i, int j);
-void ShowData(int x[10]);
+void QSort(int x[], int left, int right);
+void BubSort(int x[], int n);
+void Swap(int x[], int i, int j);
+void ShowData(int x[],int n);
 int main(void);
 
   /* クイックソートを行う */
-void QSort(int x[10], int left, int right)
+void QSort(int x[], int left, int right)
 {
     int i, j;
     int pivot;
@@ -32,7 +33,7 @@ void QSort(int x[10], int left, int right)
         i++;                       /* 次のデータ */
         j--;
     }
-    ShowData(x);               /* 途中経過を表示 */
+    ShowData(x,right+1);               /* 途中経過を表示 */
 
     if (left < i - 1)              /* 基準値の左に 2 以上要素があれば */
         QSort(x, left, i - 1);     /* 左の配列を Q ソートする */
@@ -40,7 +41,7 @@ void QSort(int x[10], int left, int right)
         QSort(x, j + 1, right);    /* 右の配列を Q ソートする */
 }
   /* バブルソートを行う */
-void BubSort(int x[10], int n)
+void BubSort(int x[], int n)
 {
     int i, j, temp;
 
@@ -53,12 +54,12 @@ void BubSort(int x[10], int n)
             }
         }   
         /* ソートの途中経過を表示 */
-        ShowData(x);
+        ShowData(x,n);
     }
 }
 
   /* 配列の要素を交換する */
-void Swap(int x[10], int i, int j)
+void Swap(int x[], int i, int j)
 {
     int temp;
 
@@ -69,40 +70,50 @@ void Swap(int x[10], int i, int j)
 
 
   /* n 個のデータを表示する */
-void ShowData(int x[10])
+void ShowData(int x[],int n)
 {
     int i;
 
-    for (i = 0; i <10 ; i++)
+    for (i = 0; i < n ; i++)
         printf("%d  ", x[i]);
     printf("\n");
 }
 
 int main(void)
-{      /* ソートする配列 */
-        int x[10],y[10];
-        for(int i=0;i<10;i++){
-                scanf("%d",&x[i]);
-                y[i]=x[i];
-            }
+{
+    int *x,*y;
+    int i,n;
+
+    printf("\n入力する個数は？：");
+    scanf("%d",&n);
+    if(n<2) return 1;
+    x=(int *)malloc( sizeof( int ) * n ); 
+    y=(int *)malloc( sizeof( int ) * n ); 
+
+    for(i=0;i<n;i++){
+            scanf("%d",&x[i]);
+            y[i]=x[i];
+    }
+
 
     //クイックソート部
     printf("ソート前:\n");
-    ShowData(x);
+    ShowData(x,n);
     printf("ソート中:\n");
-    BubSort(x,10);
+    BubSort(x,n);
     printf("ソート後:\n");
-    ShowData(x);
+    ShowData(x,n);
 
     //バブルソート部
     printf("ソート前:\n");
-    ShowData(y);
+    ShowData(y,n);
     printf("ソート中:\n");
-    QSort(y, 0,10 - 1);
+    QSort(y, 0,n - 1);
     printf("ソート後:\n");
-    ShowData(y);
+    ShowData(y,n);
 
 
-
+        free(x);
+        free(y);
         return 0;
 }
